@@ -48,14 +48,24 @@ app.get("/login", async (req, res) => {
       );
       if (rows.length == 0) {
         console.log("No user found!!");
+        res.status(400).send({ Err: "Bad request!!" });
+      } else {
+        if (username == rows[0].username && password == rows[0].password) {
+          console.log("Login successful!!");
+          res.status(200).send("Login successful!!");
+        } else {
+          console.log("Wrong password!!");
+          res.status(400).send({ ERR: "Bad request." });
+        }
       }
-      res.status(200).send({ LOG: "Login Successful!!" });
     } catch (err) {
-      console.log({ ERR: `${err}` });
-      res.status(500).send({ ERR: "Internal Server Error!!" });
+      console.log(err);
+      res.status(500).send({ ERR: "Internal server error." });
     }
   }
 });
+
+app
 
 app.listen(PORT, () => {
   console.log(`Server Running successfully in ${PORT}`);
